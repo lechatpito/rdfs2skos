@@ -1,8 +1,9 @@
 #summary RDF2SKOS XSL sheet
+#labels Featured,Phase-Design,Phase-Implementation
 
 = Introduction =
 
-Here is the XSL sheet. Please edit it and add functionalities. I'll update the release regularly to include them. 
+Here is the XSL stylesheet.
 
 = Details =
 {{{
