@@ -1,0 +1,66 @@
+# Introduction #
+
+Here is the XSL stylesheet.
+
+# Details #
+```
+
+<xsl:stylesheet version = '1.0'
+     xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
+     xmlns:skos='http://www.w3.org/2004/02/skos/core#'
+     xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+     xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'
+     >
+<xsl:output method="xml" indent="yes"/>
+<xsl:strip-space elements="*"/>
+
+<xsl:template match="rdf:RDF">
+<rdf:RDF>
+	<xsl:copy-of select="@*"/>
+	<xsl:apply-templates select="//rdfs:Class"/>
+</rdf:RDF>
+</xsl:template>
+
+
+<xsl:template match="//rdf:RDF/rdfs:Class">
+	<skos:Concept rdf:about="{@rdf:about}">
+
+	<xsl:for-each select="rdfs:label">
+		<skos:prefLabel>
+			<xsl:if test="@xml:lang">
+                	<xsl:attribute name="xml:lang">
+				<xsl:value-of select="@xml:lang"/>
+                	</xsl:attribute>
+			</xsl:if>
+		<xsl:value-of select="."/>
+		</skos:prefLabel>
+
+	</xsl:for-each>
+	<xsl:for-each select="rdfs:comment">
+		<skos:note>
+			<xsl:if test="@xml:lang">
+                	<xsl:attribute name="xml:lang">
+				<xsl:value-of select="@xml:lang"/>
+                	</xsl:attribute>
+			</xsl:if>
+		<xsl:value-of select="."/>
+
+		</skos:note>
+	</xsl:for-each>	
+	<xsl:for-each select="rdfs:subClassOf">
+		<skos:broader>
+			<xsl:attribute name="rdf:resource">
+			<xsl:if test="rdfs:Class/@rdf:about">
+				<xsl:value-of select="rdfs:Class/@rdf:about"/>
+			</xsl:if>
+			<xsl:if test="@rdf:resource">
+
+				<xsl:value-of select="@rdf:resource"/>
+			</xsl:if>
+			</xsl:attribute>
+		</skos:broader>
+	</xsl:for-each>
+	</skos:Concept>
+</xsl:template>
+</xsl:stylesheet>
+```
